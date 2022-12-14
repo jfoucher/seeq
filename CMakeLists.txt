@@ -27,14 +27,16 @@ add_executable(seeq)
 target_sources(seeq PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/main.cpp
         ${CMAKE_CURRENT_LIST_DIR}/usb_descriptors.c
+        ${CMAKE_CURRENT_LIST_DIR}/lib/midi/midi.c
         )
 
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/lib/encoder)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/lib/OLED)
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/lib/midi_uart_lib)
+# add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/lib/keypad)
 
 # Make sure TinyUSB can find tusb_config.h
-target_include_directories(seeq PUBLIC
-        ${CMAKE_CURRENT_LIST_DIR})
+target_include_directories(seeq PUBLIC ${CMAKE_CURRENT_LIST_DIR})
 
 # In addition to pico_stdlib required for common PicoSDK functionality, add dependency on tinyusb_device
 # for TinyUSB device support and tinyusb_board for the additional board support library used by the example
@@ -50,10 +52,12 @@ hardware_vreg
 pico_multicore
 encoder
 OLED
+midi_uart_lib
+# keypad
 )
 
 # enable usb output, disable uart output
-# pico_enable_stdio_usb(seeq 1)
+# pico_enable_stdio_usb(seeq 0)
 # pico_enable_stdio_uart(seeq 0)
 
 

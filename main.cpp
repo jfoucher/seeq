@@ -26,6 +26,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdarg.h>
 
 #include "pico/stdlib.h"
 #include "pico/time.h"
@@ -44,6 +45,21 @@
 
 #include "bsp/board.h"
 #include "tusb.h"
+
+#include "lib/midi/midi.h"
+// #include "lib/keypad/keypad.h"
+
+#include "lib/midi/midi.c"
+#include "lib/encoder_button/encoder_button.h"
+#include "lib/encoder_button/encoder_button.c"
+#include "lib/midi_uart_lib/midi_uart_lib.h"
+
+#define MIDI_UART_NUM 1
+const uint MIDI_UART_TX_GPIO = 16;
+const uint MIDI_UART_RX_GPIO = 17;
+
+static void *midi_uart_instance;
+
 
 
 #define CABLE_NUM 0 // MIDI jack associated with USB endpoint
@@ -72,6 +88,11 @@ absolute_time_t last_play_time;
 absolute_time_t last_off_time;
 bool playing = true;
 bool recording = false;
+
+// Keypad pins
+
+uint8_t row_pins[] = {9, 8, 11, 10};
+uint8_t col_pins[] = {15, 14, 13, 12};
 
 
 
@@ -160,6 +181,19 @@ void core1_func() {
 }
 
 
+void println(const char * format, ... ) {
+    char text[12];
+    va_list arguments;
+    va_start(arguments, format);
+    // https://mylifeforthecode.github.io/creating-a-custom-printf-function-in-c/
+    vsprintf(text, format, arguments);
+    va_end(arguments);
+    strcat(text, "\n");
+    tud_cdc_write(text, strlen(text));
+    tud_cdc_write_flush();
+}
+
+
 void rotaryChangedCallback(encoder::Encoder * enc)
 {
     int x = enc->count();
@@ -175,7 +209,10 @@ void rotaryChangedCallback(encoder::Encoder * enc)
     queue_try_add(&queue, &tempo);
 }
 
+
 void midi_task(void);
+void cdc_task(void);
+void keypad_task(void);
 
 /*------------- MAIN -------------*/
 int main(void)
@@ -186,12 +223,23 @@ int main(void)
   #endif
   stdio_init_all();
 
+
   board_init();
 
   tusb_init();
 
-  printf("Initializing LEDs\n");
+
   init_leds();
+
+  // init_matrix(4, 4, row_pins, col_pins);
+
+  midi_uart_instance = midi_uart_configure(MIDI_UART_NUM, MIDI_UART_TX_GPIO, MIDI_UART_RX_GPIO);
+
+
+  pressed = true;
+  encoder_init(22);
+
+
 
   const uint PIN_A = 26;  // The A channel pin
   const uint PIN_B = 27;  // The B channel pin
@@ -222,24 +270,15 @@ int main(void)
   while (1)
   {
     tud_task(); // tinyusb device task
+    keypad_task();
     midi_task();
+    cdc_task();
   }
 
 
   return 0;
 }
 
-void note_on(uint8_t midi_note) {
-  // Send Note On for current position at full velocity (127) on channel 1.
-  uint8_t note_on[3] = { 0x90 | CHANNEL, midi_note, 127 };
-  tud_midi_stream_write(CABLE_NUM, note_on, 3);
-}
-
-void note_off(uint8_t midi_note) {
-  // Send Note On for current position at full velocity (127) on channel 1.
-  uint8_t note_off[3] = { 0x80 | CHANNEL, midi_note, 0};
-  tud_midi_stream_write(CABLE_NUM, note_off, 3);
-}
 
 //--------------------------------------------------------------------+
 // MIDI Task
@@ -267,6 +306,8 @@ void midi_task(void)
     last_play_time = t;
     led_display(play_step);
     note_on(sequence[play_step]);
+    println("playing %d", sequence[play_step]);
+
     play_step++;
     if (play_step > last_step) {
         play_step = first_step;
@@ -280,6 +321,21 @@ void midi_task(void)
     note_off(sequence[ps]);
   }
 
+  // Change state if button is taped
+
+  if (!pressed 
+    && to_ms_since_boot(released_at) > to_ms_since_boot(pressed_at) 
+    && absolute_time_diff_us(pressed_at, released_at) < 500000
+  ) {
+    pressed_at = t;
+    println("change state");
+    playing = !playing;
+  }
+
+  uint8_t rx[48];
+
+  poll_midi_uart_rx(midi_uart_instance, rx);
+
     // The MIDI interface always creates input and output port/jack descriptors
   // regardless of these being used or not. Therefore incoming traffic should be read
   // (possibly just discarded) to avoid the sender blocking in IO
@@ -288,6 +344,16 @@ void midi_task(void)
 
 
 
+}
+
+void keypad_task() {
+  int result = -1;//scan_matrix();
+
+  // println("scan result: %d", result);
+  if (result >= 0) {
+    play_step = result;
+  }
+  
 }
 
 
@@ -320,4 +386,53 @@ void tud_suspend_cb(bool remote_wakeup_en)
 void tud_resume_cb(void)
 {
 
+}
+
+//--------------------------------------------------------------------+
+// USB CDC
+//--------------------------------------------------------------------+
+void cdc_task(void)
+{
+  // connected() check for DTR bit
+  // Most but not all terminal client set this when making connection
+  // if ( tud_cdc_connected() )
+  {
+    // connected and there are data available
+    if ( tud_cdc_available() )
+    {
+      // read data
+      char buf[64];
+      uint32_t count = tud_cdc_read(buf, sizeof(buf));
+      (void) count;
+
+      // Echo back
+      // Note: Skip echo by commenting out write() and write_flush()
+      // for throughput test e.g
+      //    $ dd if=/dev/zero of=/dev/ttyACM0 count=10000
+      tud_cdc_write(buf, count);
+      tud_cdc_write_flush();
+    }
+  }
+}
+
+// Invoked when cdc when line state changed e.g connected/disconnected
+void tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts)
+{
+  (void) itf;
+  (void) rts;
+
+  // TODO set some indicator
+  if ( dtr )
+  {
+    // Terminal connected
+  }else
+  {
+    // Terminal disconnected
+  }
+}
+
+// Invoked when CDC interface received data from host
+void tud_cdc_rx_cb(uint8_t itf)
+{
+  (void) itf;
 }
