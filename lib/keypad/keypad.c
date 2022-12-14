@@ -24,7 +24,7 @@ void init_matrix(uint8_t nrows, uint8_t ncols, uint8_t row_pins[], uint8_t col_p
     for (int i = 0; i < ncols; i++) {
         gpio_init(col_pins[i]);
         gpio_pull_up(col_pins[i]);
-        gpio_set_dir(row_pins[i], GPIO_IN);
+        gpio_set_dir(col_pins[i], GPIO_IN);
         cols[i] = col_pins[i];
         mask |= 1 << col_pins[i];
     }
@@ -40,6 +40,7 @@ void init_matrix(uint8_t nrows, uint8_t ncols, uint8_t row_pins[], uint8_t col_p
 
 int scan_matrix(void) {
     for (int i = 0; i < nr; i++) {
+        
         // Set all row pins high except for the one we are currently reading
         for (int n = 0; n < nr; n++) {
             gpio_put(rows[n], n==i ? 0 : 1);
@@ -51,7 +52,7 @@ int scan_matrix(void) {
             // We have at least one low pin
             // Check all row pins to see which one is low
             for (int j = 0; j < nc; j++) {
-                if (gpio_get(cols[j])) {
+                if (gpio_get(cols[j]) == 0) {
                     return i*nc + j; 
                 }
             }

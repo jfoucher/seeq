@@ -47,7 +47,7 @@
 #include "tusb.h"
 
 #include "lib/midi/midi.h"
-// #include "lib/keypad/keypad.h"
+#include "lib/keypad/keypad.h"
 
 #include "lib/midi/midi.c"
 #include "lib/encoder_button/encoder_button.h"
@@ -72,6 +72,7 @@ queue_t queue;
 
 uint8_t sequence[16] = {74,78,81,86,90,93,98,102,57,61,66,69,73,78,81,85};
 uint8_t active[16];
+int8_t pressed_key = -1;
 uint8_t first_step = 0;
 uint8_t last_step = 15;
 uint8_t current_led = 0;
@@ -86,6 +87,7 @@ int tempo = 120;
 absolute_time_t t;
 absolute_time_t last_play_time;
 absolute_time_t last_off_time;
+absolute_time_t last_keypad_time;
 bool playing = true;
 bool recording = false;
 
@@ -231,7 +233,7 @@ int main(void)
 
   init_leds();
 
-  // init_matrix(4, 4, row_pins, col_pins);
+  init_matrix(4, 4, row_pins, col_pins);
 
   midi_uart_instance = midi_uart_configure(MIDI_UART_NUM, MIDI_UART_TX_GPIO, MIDI_UART_RX_GPIO);
 
@@ -266,6 +268,7 @@ int main(void)
 
   last_play_time = get_absolute_time();
   last_off_time = get_absolute_time();
+  last_keypad_time = get_absolute_time();
 
   while (1)
   {
@@ -301,11 +304,14 @@ void midi_task(void)
             
       //   if (active[ps]):
       //       note_off(sequence[ps])
+  led_display(current_led);
 
   if (playing && delta > 60000000 / tempo) {
     last_play_time = t;
-    led_display(play_step);
+    
     note_on(sequence[play_step]);
+    current_led = play_step;
+    
     println("playing %d", sequence[play_step]);
 
     play_step++;
@@ -341,19 +347,21 @@ void midi_task(void)
   // (possibly just discarded) to avoid the sender blocking in IO
   uint8_t packet[4];
   while ( tud_midi_available() ) tud_midi_packet_read(packet);
-
-
-
 }
 
 void keypad_task() {
-  int result = -1;//scan_matrix();
-
-  // println("scan result: %d", result);
-  if (result >= 0) {
-    play_step = result;
+  if (pressed_key >= 0) {
+    led_display((uint8_t)pressed_key);
   }
-  
+  int64_t delta = absolute_time_diff_us(last_play_time, get_absolute_time());
+  if (delta > 10000) {
+    int result = scan_matrix();
+    if (result >= 0) {
+      pressed_key = (int8_t)result;
+    } else {
+      pressed_key = -1;
+    }
+  }
 }
 
 

@@ -33,7 +33,7 @@ target_sources(seeq PUBLIC
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/lib/encoder)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/lib/OLED)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/lib/midi_uart_lib)
-# add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/lib/keypad)
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/lib/keypad)
 
 # Make sure TinyUSB can find tusb_config.h
 target_include_directories(seeq PUBLIC ${CMAKE_CURRENT_LIST_DIR})
@@ -53,7 +53,7 @@ pico_multicore
 encoder
 OLED
 midi_uart_lib
-# keypad
+keypad
 )
 
 # enable usb output, disable uart output
