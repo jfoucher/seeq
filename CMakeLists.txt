@@ -22,7 +22,10 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
 
+
 add_executable(seeq)
+
+pico_set_binary_type(seeq copy_to_ram)
 
 target_sources(seeq PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/main.cpp
@@ -49,6 +52,7 @@ hardware_timer
 hardware_pio
 hardware_irq
 hardware_vreg
+hardware_flash
 pico_multicore
 encoder
 OLED
