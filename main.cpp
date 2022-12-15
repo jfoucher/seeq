@@ -43,6 +43,7 @@
 
 #include "pico/binary_info.h"
 
+#include "lib/picoLED/PicoLed.hpp"
 
 #include "bsp/board.h"
 #include "tusb.h"
@@ -379,9 +380,12 @@ void rotaryChangedCallback(encoder::Encoder * enc)
 void midi_task(void);
 void cdc_task(void);
 void keypad_task(void);
-
+void led_task(void);
 
 encoder::Encoder enc(pio0, 0, {ENCODER_PIN_A, ENCODER_PIN_B});
+auto ledStrip = PicoLed::addLeds<PicoLed::WS2812B>(pio0, 1, 23, 1, PicoLed::FORMAT_GRB);
+PicoLed::Color led_color = PicoLed::RGB(0, 255, 0);
+PicoLed::Color old_led_color = PicoLed::RGB(0, 255, 0);
 
 
 /*------------- MAIN -------------*/
@@ -410,7 +414,8 @@ int main(void)
   //Init encoder button
   encoder_init(22);
 
-
+  ledStrip.fill(led_color);
+  ledStrip.show();
 
   enc.init();
   enc.set_count(tempo);
@@ -441,8 +446,6 @@ int main(void)
   last_keypad_time = get_absolute_time();
   last_save_time = get_absolute_time();
   last_manual_save_time = get_absolute_time();
-  
-
 
   while (1)
   {
@@ -451,6 +454,7 @@ int main(void)
     midi_task();
     cdc_task();
     save_data_task();
+    led_task();
   }
 
 
@@ -475,6 +479,7 @@ void midi_task(void)
 
     if (active[play_step]) {
       note_on(sequence[play_step]);
+      led_color = PicoLed::RGB(0, 80, 0);
       current_led = play_step;
       if (pressed_key < 0) {
         note_display = sequence[play_step];
@@ -543,10 +548,15 @@ void midi_task(void)
       
       println("change state");
       playing = !playing;
-
+      
       if (!playing) {
         int note = sequence[play_step];
         queue_try_add(&note_queue, &note);
+        for (int j = 0; j < 16; j++) {
+          note_off(sequence[j]);
+        }
+        
+        led_color = PicoLed::RGB(80, 0, 0);
       }
     } else {
       // If a key is pressed, toggle note
@@ -615,6 +625,16 @@ void save_data_task() {
     }
     last_save_time = get_absolute_time();
     
+  }
+}
+
+
+
+void led_task() {
+  if (old_led_color.blue != led_color.blue || old_led_color.red != led_color.red || old_led_color.green != led_color.green ) {
+    ledStrip.fill(led_color);
+    ledStrip.show();
+    old_led_color = led_color;
   }
 }
 

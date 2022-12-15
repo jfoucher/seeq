@@ -38,6 +38,8 @@ add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/lib/OLED)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/lib/midi_uart_lib)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/lib/keypad)
 
+include("lib/PicoLED/PicoLed.cmake")
+
 # Make sure TinyUSB can find tusb_config.h
 target_include_directories(seeq PUBLIC ${CMAKE_CURRENT_LIST_DIR})
 
@@ -58,6 +60,7 @@ encoder
 OLED
 midi_uart_lib
 keypad
+PicoLed
 )
 
 # enable usb output, disable uart output
