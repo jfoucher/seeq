@@ -232,7 +232,7 @@ void OLED::drawFilledRectangle(uint8_t x,
                                uint8_t width,
                                uint8_t height) {
     for (uint8_t i = 0; i < height; i++) {
-        drawFastHLine(x, y, width);
+        drawFastHLine(x, y+i, width);
     }
 }
 

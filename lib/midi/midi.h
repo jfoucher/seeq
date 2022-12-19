@@ -7,7 +7,7 @@
 #define MIDI_H
 
 
-void note_on(uint8_t);
-void note_off(uint8_t);
+void note_on(uint8_t midi_note, uint8_t velocity);
+void note_off(uint8_t midi_note);
 uint8_t poll_midi_uart_rx(void *, uint8_t *);
 #endif

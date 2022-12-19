@@ -6,9 +6,9 @@
 #define CHANNEL 0
 #define CABLE_NUM 0
 
-void note_on(uint8_t midi_note) {
+void note_on(uint8_t midi_note, uint8_t velocity) {
   // Send Note On for current position at full velocity (127) on channel 1.
-  uint8_t note_on[3] = { 0x90 | CHANNEL, midi_note, 127 };
+  uint8_t note_on[3] = { 0x90 | CHANNEL, midi_note, velocity };
   tud_midi_stream_write(CABLE_NUM, note_on, 3);
 }
 

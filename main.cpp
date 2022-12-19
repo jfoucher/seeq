@@ -84,6 +84,7 @@ queue_t note_queue;
 
 uint8_t sequence[16] = {74,78,81,86,90,93,98,102,57,61,66,69,73,78,81,85};
 uint8_t active[16] = {true, true, true, true,true, true, true, true,true, true, true, true,true, true, true, true};
+uint8_t velocity[16] = {127, 127, 127, 127,127, 127, 127, 127,127, 127, 127, 127,127, 127, 127, 127};
 int8_t pressed_key = -1;
 uint8_t first_step = 0;
 uint8_t last_step = 15;
@@ -100,6 +101,7 @@ uint16_t old_tempo = 0;
 
 int note_display = -1;
 int old_note_display = 0;
+uint16_t note_message = 0;
 
 absolute_time_t t;
 absolute_time_t last_play_time;
@@ -107,10 +109,21 @@ absolute_time_t last_off_time;
 absolute_time_t last_keypad_time;
 absolute_time_t last_save_time;
 absolute_time_t last_manual_save_time;
+absolute_time_t last_manual_play_time;
 bool playing = true;
 bool recording = false;
-
+bool handled_key_and_encoder_pressed = false;
 bool changed_enc_count_on_press = false;
+
+struct SeeqData {
+  uint16_t header;
+  uint16_t tempo;
+  uint8_t first_step;
+  uint8_t last_step;
+  uint8_t sequence[16];
+  uint8_t active[16];
+  uint8_t velocity[16];
+};
 
 // Keypad pins
 
@@ -137,15 +150,7 @@ void init_leds() {
 }
 
 
-struct SeeqData {
-  uint16_t header;
-  uint16_t tempo;
-  uint8_t first_step;
-  uint8_t last_step;
-  uint8_t sequence[16];
-  uint8_t active[16];
-  
-};
+
 
 
 SeeqData seeqData;
@@ -156,6 +161,7 @@ bool saveData() {
     for (int i = 0; i< 16; i++) {
       seeqData.sequence[i] = sequence[i];
       seeqData.active[i] = active[i];
+      seeqData.velocity[i] = velocity[i];
     }
     seeqData.last_step = last_step;
     seeqData.first_step = first_step;
@@ -206,6 +212,10 @@ void readData() {
       if (seeqData.active[i] <= 0x7F) {
         active[i] = (bool)seeqData.active[i];
       }
+
+      if (seeqData.velocity[i] <= 0x7F) {
+        velocity[i] = (uint8_t)seeqData.velocity[i];
+      }
     }
 }
 
@@ -237,10 +247,10 @@ const char * notes[] = {
 
 
 void note_text(char * note_str, uint8_t midi_note) {
-  int n = ((int)midi_note) - 12;
+  int n = ((int)midi_note) - 24;
   int octave = n / 12;
   if (n < 0) {
-    octave = -1;
+    octave = -octave;
   }
   const char * note = notes[midi_note%12];
 
@@ -260,12 +270,13 @@ void __time_critical_func(core1_func)() {
     oled.setFont(&Dialog_bold_16);
     uint8_t string2[] = "SEEQ";
     oled.print(60, 5, string2);
+    oled.drawFilledRectangle(120, 10, 8, 24);
     // Draw a line
     oled.drawFastHLine(0, 31, 128);
     oled.drawFastHLine(0, 0, 128);
     oled.show();
     
-    sleep_ms(3000);
+    sleep_ms(500);
 
 
     sem_release(&video_initted);
@@ -290,9 +301,9 @@ void __time_critical_func(core1_func)() {
           old_tempo = new_tempo;
 
           char str[4];
-
-          if (new_note_display >= 0 && new_note_display <= 0x7F) {
-            note_text(str, new_note_display);
+          uint8_t note = (new_note_display & 0xFF);
+          if (note >= 0 && note <= 0x7F) {
+            note_text(str, note);
             //println("note text %s", str);
           } else {
             sprintf(str, "%s",  "  - ");
@@ -300,6 +311,10 @@ void __time_critical_func(core1_func)() {
 
           oled.print(64, 0, (uint8_t *)str);
           old_note_display = new_note_display;
+          uint8_t vh = (uint8_t)(new_note_display >> 8) / 4;
+          // draw velocity rectangle
+          uint8_t y_start = 32 - vh;
+          oled.drawFilledRectangle(120, y_start, 8, vh);
         
           oled.show();
         }
@@ -329,11 +344,23 @@ void println(const char * format, ... ) {
     tud_cdc_write_flush();
 }
 
-
+int note_to_stop = -1;
 void rotaryChangedCallback(encoder::Encoder * enc)
 {
   int x = enc->count();
-  if (pressed_key >= 0) {
+  if (pressed_key >= 0 && pressed) {
+    // A key is pressed and the rotary encoder as well, 
+    // change the velocity
+    if (x < 0) {
+        x = 0;
+        enc->set_count(x);
+    }
+    if (x > 127) {
+        x = 127;
+        enc->set_count(x);
+    }
+    velocity[pressed_key] = x;
+  } else if (pressed_key >= 0) {
     // A key is pressed, so change corresponding note
     if (x < 0) {
         x = 0;
@@ -343,12 +370,13 @@ void rotaryChangedCallback(encoder::Encoder * enc)
         x = 127;
         enc->set_count(x);
     }
-
+    note_off(sequence[pressed_key]);
     sequence[pressed_key] = x;
     if (!playing) {
-      note_on(sequence[pressed_key]);
+      note_on(sequence[pressed_key], velocity[pressed_key]);
       //sleep_ms(100);
-      note_off(sequence[pressed_key]);
+      note_to_stop = sequence[pressed_key];
+      last_manual_play_time = get_absolute_time();
     }
   } else if (pressed) {
     // Encoder is pressed, change last step
@@ -414,8 +442,7 @@ int main(void)
   //Init encoder button
   encoder_init(22);
 
-  ledStrip.fill(led_color);
-  ledStrip.show();
+
 
   enc.init();
   enc.set_count(tempo);
@@ -437,15 +464,19 @@ int main(void)
   queue_init(&queue, sizeof(tempo), 32);
   queue_try_add(&queue, &tempo);
 
-  queue_init(&note_queue, sizeof(uint8_t), 32);
-
-  queue_try_add(&note_queue, &note_display);
+  queue_init(&note_queue, sizeof(uint16_t), 32);
+  note_message = note_display;
+  queue_try_add(&note_queue, &note_message);
 
   last_play_time = get_absolute_time();
   last_off_time = get_absolute_time();
   last_keypad_time = get_absolute_time();
   last_save_time = get_absolute_time();
   last_manual_save_time = get_absolute_time();
+  last_manual_play_time = get_absolute_time();
+
+  ledStrip.fill(led_color);
+  ledStrip.show();
 
   while (1)
   {
@@ -478,13 +509,14 @@ void midi_task(void)
     last_play_time = t;
 
     if (active[play_step]) {
-      note_on(sequence[play_step]);
+      note_on(sequence[play_step], velocity[play_step]);
       led_color = PicoLed::RGB(0, 80, 0);
       current_led = play_step;
       if (pressed_key < 0) {
         note_display = sequence[play_step];
         //println("showing note %i", note);
-        queue_try_add(&note_queue, &note_display);
+        note_message = note_display | (velocity[play_step] << 8);
+        queue_try_add(&note_queue, &note_message);
       }
     } else {
       current_led = -1;
@@ -506,6 +538,11 @@ void midi_task(void)
       ps = last_step;
     }
     note_off(sequence[ps]);
+
+  } else if (!playing && note_to_stop >=0 && absolute_time_diff_us(last_manual_play_time, get_absolute_time()) > 100000) {
+    note_off(note_to_stop);
+    
+    note_to_stop = -1;
   }
 
   
@@ -515,10 +552,26 @@ void midi_task(void)
     new_last_step = last_step;
     enc.set_count(last_step);
     changed_enc_count_on_press = true;
-  } else if (!pressed && changed_enc_count_on_press) {
+  } else if (!pressed && changed_enc_count_on_press  && pressed_key < 0) {
     println("done changing  new last step");
     enc.set_count(tempo);
     changed_enc_count_on_press = false;
+  }
+
+  if (pressed && pressed_key >= 0 && !handled_key_and_encoder_pressed) {
+    // Key and encoder pressed at the same time, will change velocity
+    // set encoder to pressed key velocity
+    enc.set_count(velocity[pressed_key]);
+    handled_key_and_encoder_pressed = true;
+  }
+
+  if (!pressed && handled_key_and_encoder_pressed) {
+    enc.set_count(sequence[pressed_key]);
+    handled_key_and_encoder_pressed = false;
+  }
+  if (pressed_key < 0 && handled_key_and_encoder_pressed) {
+    enc.set_count(tempo);
+    handled_key_and_encoder_pressed = false;
   }
 
   if (!pressed && new_last_step != last_step && play_step == 0) {
@@ -550,8 +603,9 @@ void midi_task(void)
       playing = !playing;
       
       if (!playing) {
-        int note = sequence[play_step];
-        queue_try_add(&note_queue, &note);
+
+        note_message = sequence[play_step] | (velocity[play_step] << 8);
+        queue_try_add(&note_queue, &note_message);
         for (int j = 0; j < 16; j++) {
           note_off(sequence[j]);
         }
@@ -587,11 +641,16 @@ void keypad_task() {
     int result = scan_matrix();
     if (result >= 0) {
       pressed_key = (int8_t)result;
-      enc.set_count(sequence[pressed_key]);
-      int note = (int)sequence[pressed_key];
-      if (note != note_display) {
-        queue_try_add(&note_queue, &note);
-        note_display = note;
+      if (pressed) {
+        enc.set_count(velocity[pressed_key]);
+      } else {
+        enc.set_count(sequence[pressed_key]);
+      }
+      
+      note_message = sequence[pressed_key] | (velocity[pressed_key] << 8);
+      if (note_message != note_display) {
+        queue_try_add(&note_queue, &note_message);
+        note_display = note_message;
         removed_note = false;
       }
       

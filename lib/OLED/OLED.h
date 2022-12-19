@@ -100,6 +100,7 @@ class OLED {
     void setFont(const GFXfont* font);
     void printChar(uint8_t x, uint8_t y, uint8_t character);
     void print(uint8_t x, uint8_t y, uint8_t* string);
+
     void drawBitmap(uint8_t x,
                     uint8_t y,
                     uint8_t width,
