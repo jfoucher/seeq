@@ -9,5 +9,5 @@
 
 void note_on(uint8_t midi_note, uint8_t velocity);
 void note_off(uint8_t midi_note);
-uint8_t poll_midi_uart_rx(void *, uint8_t *);
+uint8_t poll_midi_uart_rx(void * midi_uart_instance, uint8_t * rx, int bsize);
 #endif

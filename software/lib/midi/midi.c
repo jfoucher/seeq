@@ -18,11 +18,11 @@ void note_off(uint8_t midi_note) {
   tud_midi_stream_write(CABLE_NUM, note_off, 3);
 }
 
-uint8_t poll_midi_uart_rx(void * midi_uart_instance, uint8_t * rx)
+uint8_t poll_midi_uart_rx(void * midi_uart_instance, uint8_t * rx, int bsize)
 {
     // Pull any bytes received on the MIDI UART out of the receive buffer and
     // send them out via USB MIDI on virtual cable 0
-    uint8_t nread = midi_uart_poll_rx_buffer(midi_uart_instance, rx, sizeof(rx));
+    uint8_t nread = midi_uart_poll_rx_buffer(midi_uart_instance, rx, bsize);
     return nread;
 
 }

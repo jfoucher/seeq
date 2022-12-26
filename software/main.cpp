@@ -43,6 +43,7 @@
 
 #include "pico/binary_info.h"
 
+
 #include "lib/picoLED/PicoLed.hpp"
 
 #include "bsp/board.h"
@@ -52,6 +53,8 @@
 #include "lib/keypad/keypad.h"
 
 #include "lib/midi/midi.c"
+#include "lib/mcp4725/mcp4725.h"
+#include "lib/mcp4725/mcp4725.c"
 #include "lib/encoder_button/encoder_button.h"
 #include "lib/encoder_button/encoder_button.c"
 #include "lib/midi_uart_lib/midi_uart_lib.h"
@@ -79,8 +82,12 @@ void __time_critical_func(core1_func)();
 void save_data_task(void);
 static semaphore_t video_initted;
 
+uint8_t midi_message[4];
+int midi_message_index = 0;
+
 queue_t queue;
 queue_t note_queue;
+queue_t cv_note_queue;
 
 uint8_t sequence[16] = {74,78,81,86,90,93,98,102,57,61,66,69,73,78,81,85};
 uint8_t active[16] = {true, true, true, true,true, true, true, true,true, true, true, true,true, true, true, true};
@@ -102,6 +109,8 @@ uint16_t old_tempo = 0;
 int note_display = -1;
 int old_note_display = 0;
 uint16_t note_message = 0;
+uint8_t cv_note_message = 0;
+uint8_t new_cv_note = 0;
 
 absolute_time_t t;
 absolute_time_t last_play_time;
@@ -110,6 +119,7 @@ absolute_time_t last_keypad_time;
 absolute_time_t last_save_time;
 absolute_time_t last_manual_save_time;
 absolute_time_t last_manual_play_time;
+absolute_time_t last_tapped_time;
 bool playing = true;
 bool recording = false;
 bool handled_key_and_encoder_pressed = false;
@@ -149,8 +159,16 @@ void init_leds() {
     }
 }
 
+int cv_notes[] = {0, 68, 136, 204, 273, 341, 409, 477, 546, 614, 682, 750, 819, 887, 955, 1024, 1092, 1160, 1228, 1297, 1365, 1433, 1501, 1570, 1638, 1706, 1774, 1843, 1911, 1979, 2048, 2116, 2184, 2252, 2321, 2389, 2457, 2525, 2594, 2662, 2730, 2798, 2867, 2935, 3003, 3072, 3140, 3208, 3276, 3345, 3413, 3481, 3549, 3618, 3686, 3754, 3822, 3891, 3959, 4027, 4096}; 
 
+int midi_to_cv(uint8_t midi_note) {
+  // Only return something for octaves from 0 to 5
+  if (midi_note < 36 || midi_note > 96 ) {
+    return 0;
+  }
 
+  return cv_notes[midi_note - 36];
+}
 
 
 SeeqData seeqData;
@@ -257,11 +275,9 @@ void note_text(char * note_str, uint8_t midi_note) {
   sprintf(note_str, "%s%i", note, octave);
 }
 
-void __time_critical_func(core1_func)() {
-    // sleep and release on core 1
-    
-        // SCL, SDA, Width, Height, Frequency, I2C Port
-    OLED oled(21, 20, 128, 32, 100000, true, i2c0);
+void __time_critical_func(core1_func)() {    
+      // SCL, SDA, Width, Height, Frequency, I2C Port
+    OLED oled(21, 20, 128, 32, 300000, true, i2c0);
 
     // Draw two circles
     oled.drawFilledCircle(100, 4, 4);
@@ -278,16 +294,20 @@ void __time_critical_func(core1_func)() {
     
     sleep_ms(500);
 
-
     sem_release(&video_initted);
     // Turn scroll ON
     // oled.setScrollDir(true);
     // oled.isScroll(true);
     while (true) {
         tight_loop_contents();
+        while (queue_try_remove(&cv_note_queue, &new_cv_note)){
+            mcp4725_set(i2c0, MCP4725_ADDR0, midi_to_cv(new_cv_note));
+        }
+
         uint16_t new_tempo = old_tempo;
         while (queue_try_remove(&queue, &new_tempo)){}
         int new_note_display = old_note_display;
+
         while (queue_try_remove(&note_queue, &new_note_display)){}
 
         bool clear = old_note_display != new_note_display || old_tempo != new_tempo;
@@ -305,6 +325,7 @@ void __time_critical_func(core1_func)() {
           if (note >= 0 && note <= 0x7F) {
             note_text(str, note);
             //println("note text %s", str);
+            
           } else {
             sprintf(str, "%s",  "  - ");
           }
@@ -374,6 +395,8 @@ void rotaryChangedCallback(encoder::Encoder * enc)
     sequence[pressed_key] = x;
     if (!playing) {
       note_on(sequence[pressed_key], velocity[pressed_key]);
+      cv_note_message = sequence[pressed_key];
+      queue_try_add(&cv_note_queue, &cv_note_message);
       //sleep_ms(100);
       note_to_stop = sequence[pressed_key];
       last_manual_play_time = get_absolute_time();
@@ -389,6 +412,19 @@ void rotaryChangedCallback(encoder::Encoder * enc)
         enc->set_count(x);
     }
     new_last_step = x;
+  } else if (recording && !playing) {
+    if (x < 0) {
+        x = 0;
+        enc->set_count(x);
+    }
+    if (x > last_step) {
+        x = last_step;
+        enc->set_count(x);
+    }
+    play_step = (uint16_t)x;
+    current_led = x;
+    note_message = sequence[play_step] | velocity[play_step] << 8;
+    queue_try_add(&note_queue, &note_message);
   } else {
     if (x < 1) {
         x = 1;
@@ -412,8 +448,8 @@ void led_task(void);
 
 encoder::Encoder enc(pio0, 0, {ENCODER_PIN_A, ENCODER_PIN_B});
 auto ledStrip = PicoLed::addLeds<PicoLed::WS2812B>(pio0, 1, 23, 1, PicoLed::FORMAT_GRB);
-PicoLed::Color led_color = PicoLed::RGB(0, 255, 0);
-PicoLed::Color old_led_color = PicoLed::RGB(0, 255, 0);
+PicoLed::Color led_color = PicoLed::RGB(0, 80, 0);
+PicoLed::Color old_led_color = PicoLed::RGB(0, 80, 0);
 
 
 /*------------- MAIN -------------*/
@@ -468,13 +504,16 @@ int main(void)
   note_message = note_display;
   queue_try_add(&note_queue, &note_message);
 
+  queue_init(&cv_note_queue, sizeof(uint8_t), 32);
+  queue_try_add(&cv_note_queue, &cv_note_message);
+
   last_play_time = get_absolute_time();
   last_off_time = get_absolute_time();
   last_keypad_time = get_absolute_time();
   last_save_time = get_absolute_time();
   last_manual_save_time = get_absolute_time();
   last_manual_play_time = get_absolute_time();
-
+  last_tapped_time = get_absolute_time();
   ledStrip.fill(led_color);
   ledStrip.show();
 
@@ -510,7 +549,9 @@ void midi_task(void)
 
     if (active[play_step]) {
       note_on(sequence[play_step], velocity[play_step]);
-      led_color = PicoLed::RGB(0, 80, 0);
+      cv_note_message = sequence[play_step];
+      queue_try_add(&cv_note_queue, &cv_note_message);
+      
       current_led = play_step;
       if (pressed_key < 0) {
         note_display = sequence[play_step];
@@ -594,16 +635,16 @@ void midi_task(void)
   if (!pressed 
     && to_ms_since_boot(released_at) > to_ms_since_boot(pressed_at) 
     && absolute_time_diff_us(pressed_at, released_at) < 500000
+    && absolute_time_diff_us(last_tapped_time, released_at) > 500000
   ) {
     pressed_at = t;
+    last_tapped_time = t;
     if (pressed_key < 0) {
       // If no key is pressed change state
-      
       println("change state");
       playing = !playing;
-      
+      recording = false;
       if (!playing) {
-
         note_message = sequence[play_step] | (velocity[play_step] << 8);
         queue_try_add(&note_queue, &note_message);
         for (int j = 0; j < 16; j++) {
@@ -611,22 +652,97 @@ void midi_task(void)
         }
         
         led_color = PicoLed::RGB(80, 0, 0);
+      } else {
+        led_color = PicoLed::RGB(0, 80, 0);
       }
     } else {
       // If a key is pressed, toggle note
       active[pressed_key] = !active[pressed_key];
     }
   }
+  // Second button tapped event
+  if (!pressed 
+    && to_ms_since_boot(released_at) > to_ms_since_boot(pressed_at) 
+    && absolute_time_diff_us(pressed_at, released_at) < 500000
+    && absolute_time_diff_us(last_tapped_time, released_at) < 500000
+  ) {
+    println("recording state");
+    pressed_at = t;
+    last_tapped_time = t;
+    playing = false;
+    recording = true;
+    play_step = 0;
+    current_led = 0;
+    enc.set_count(0);
+    led_color = PicoLed::RGB(0, 0, 80);
+    note_message = sequence[play_step] | velocity[play_step] << 8;
+    queue_try_add(&note_queue, &note_message);
+  }
 
   uint8_t rx[48];
+  uint8_t nread;
 
-  poll_midi_uart_rx(midi_uart_instance, rx);
+  while((nread = midi_uart_poll_rx_buffer(midi_uart_instance, rx, sizeof(rx))) > 0){
+    for (int b = 0; b < nread; b++) {
+      if (rx[b] == 0xFE) {
+        midi_message_index = 0;
+      } else {
+        midi_message[midi_message_index] = rx[b];
+        midi_message_index++;
+      }
+    }
+    
+  }
 
-    // The MIDI interface always creates input and output port/jack descriptors
+  if (midi_message_index >= 3) {
+    midi_message_index = 0;
+    if (recording && midi_message[0] == 0x90 && midi_message[2] > 0) {
+      // Note on
+        sequence[play_step] = midi_message[1];
+        velocity[play_step] = midi_message[2];
+        
+        
+        note_message = sequence[play_step] | velocity[play_step] << 8;
+        cv_note_message = sequence[play_step];
+        queue_try_add(&note_queue, &note_message);
+        queue_try_add(&cv_note_queue, &cv_note_message);
+        note_on(sequence[play_step], velocity[play_step]);
+        note_off(sequence[play_step]);
+
+        play_step++;
+        if (play_step > last_step) {
+            play_step = first_step;
+        }
+        current_led = play_step;
+    }
+  }
+  
+
+
+  // The MIDI interface always creates input and output port/jack descriptors
   // regardless of these being used or not. Therefore incoming traffic should be read
   // (possibly just discarded) to avoid the sender blocking in IO
   uint8_t packet[4];
-  while ( tud_midi_available() ) tud_midi_packet_read(packet);
+  while (tud_midi_available()) {
+    tud_midi_packet_read(packet);
+    if (recording) {
+      //println("USB MIDI %02X %02X %02X %02X", packet[0], packet[1], packet [2], packet [3]);
+      if (packet[0] == 0x09 && packet[1] == 0x90) {
+        // Note on message
+        sequence[play_step] = packet[2];
+        velocity[play_step] = packet[3];
+        
+        play_step++;
+        if (play_step > last_step) {
+            play_step = first_step;
+        }
+        note_message = sequence[play_step] | velocity[play_step] << 8;
+        queue_try_add(&note_queue, &note_message);
+        current_led = play_step;
+      }
+    }
+    
+  }
 }
 
 bool removed_note = true;
@@ -666,7 +782,7 @@ void keypad_task() {
       if (new_last_step != ls) {
         ls = new_last_step;
       }
-      enc.set_count(pressed ? ls : tempo);
+      enc.set_count(playing ? (pressed ? ls : tempo) : play_step);
     }
   }
 }

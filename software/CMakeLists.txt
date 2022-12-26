@@ -37,6 +37,7 @@ add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/lib/encoder)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/lib/OLED)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/lib/midi_uart_lib)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/lib/keypad)
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/lib/mcp4725)
 
 include("lib/PicoLED/PicoLed.cmake")
 
@@ -52,6 +53,7 @@ tinyusb_device
 tinyusb_board
 hardware_timer
 hardware_pio
+hardware_i2c
 hardware_irq
 hardware_vreg
 hardware_flash
@@ -61,6 +63,7 @@ OLED
 midi_uart_lib
 keypad
 PicoLed
+mcp4725
 )
 
 # enable usb output, disable uart output
