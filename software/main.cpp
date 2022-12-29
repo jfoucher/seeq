@@ -186,9 +186,6 @@ bool saveData() {
 
     uint8_t* dataAsBytes = (uint8_t*) &seeqData;
     int dataSize = sizeof(seeqData);
-
-    println("save tempo %i", seeqData.tempo);
-    println("save last_step %i", seeqData.last_step);
     
     int writeSize = (dataSize / FLASH_PAGE_SIZE) + 1; // how many flash pages we're gonna need to write
     int sectorCount = ((writeSize * FLASH_PAGE_SIZE) / FLASH_SECTOR_SIZE) + 1; // how many flash sectors we're gonna need to erase
@@ -201,7 +198,6 @@ bool saveData() {
         if (dataAsBytes[i] != flash_target_contents[i])
             return false;
     }
-    println("ls from flash %02X", flash_target_contents[5]);
     
     return true;
 }
@@ -789,15 +785,11 @@ void keypad_task() {
 
 void save_data_task() {
   int64_t delta = absolute_time_diff_us(last_save_time, get_absolute_time());
-
+  int64_t delta2 = absolute_time_diff_us(last_play_time, t);
   // Autosave every minute
 
-  if (delta > 60000000) {
-    if (saveData()) {
-      println("saved data");
-    } else {
-      println("save data fail");
-    }
+  if (delta > 60000000 && delta2 < 1000) {
+    saveData();
     last_save_time = get_absolute_time();
     
   }
