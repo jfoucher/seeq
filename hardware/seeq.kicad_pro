@@ -392,8 +392,8 @@
       "idf": "",
       "netlist": "",
       "specctra_dsn": "",
-      "step": "",
-      "vrml": ""
+      "step": "seeq.step",
+      "vrml": "seeq.wrl"
     },
     "page_layout_descr_file": ""
   },
