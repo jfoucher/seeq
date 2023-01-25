@@ -20,44 +20,41 @@ void init_matrix(uint8_t nrows, uint8_t ncols, uint8_t row_pins[], uint8_t col_p
     cols = (uint8_t *)malloc( sizeof(uint8_t) * ncols );
     nr = nrows;
     nc = ncols;
-    // Set cols as inputs
+    // Set cols as outputs
     for (int i = 0; i < ncols; i++) {
         gpio_init(col_pins[i]);
-        gpio_pull_up(col_pins[i]);
         gpio_set_dir(col_pins[i], GPIO_IN);
         cols[i] = col_pins[i];
-        mask |= 1 << col_pins[i];
     }
 
-    // Set rows as outputs
+    // Set rows as inputs
     for (int i = 0; i < nrows; i++) {
         gpio_init(row_pins[i]);
-        gpio_set_dir(row_pins[i], GPIO_OUT);
-        gpio_put(row_pins[i], 1);
+        gpio_set_dir(row_pins[i], GPIO_IN);
+        gpio_pull_up(row_pins[i]);
         rows[i] = row_pins[i];
+        mask |= 1 << row_pins[i];
     }
 }
 
 int scan_matrix(void) {
-    for (int i = 0; i < nr; i++) {
-        
-        // Set all row pins high except for the one we are currently reading
-        for (int n = 0; n < nr; n++) {
-            gpio_put(rows[n], n==i ? 0 : 1);
-        }
-
+    int pressed = -1;
+    for (int i = 0; i < nc; i++) {
         // Check if any attached row pin is low
+        gpio_set_dir(cols[i], GPIO_OUT);
+        gpio_put(cols[i], 0);
 
-        if (gpio_get_all() && mask) {
-            // We have at least one low pin
-            // Check all row pins to see which one is low
-            for (int j = 0; j < nc; j++) {
-                if (gpio_get(cols[j]) == 0) {
-                    return i*nc + j; 
-                }
+        for (int j = 0; j < nr; j++) {
+            if (gpio_get(rows[j]) == 0) {
+                pressed = i*nr + j; 
             }
         }
+        gpio_set_dir(cols[i], GPIO_IN);
+        if (pressed > -1) {
+            return pressed;
+        }
     }
+    
 
-    return -1;
+    return pressed;
 }

@@ -62,8 +62,8 @@
 #define MIDI_UART_NUM 1
 #define CABLE_NUM 0 // MIDI jack associated with USB endpoint
 #define CHANNEL 0 // 0 for channel 1
-#define ENCODER_PIN_A 26
-#define ENCODER_PIN_B 27
+#define ENCODER_PIN_A 27
+#define ENCODER_PIN_B 26
 
 #define FLASH_TARGET_OFFSET (512 * 1024)
 
@@ -99,8 +99,8 @@ uint8_t new_last_step = 15;
 uint8_t current_led = 0;
 uint8_t previous_led = 20;
 uint8_t play_step = 0;
-uint8_t led_row_pins[4] = {1, 0, 3, 2};
-uint8_t led_col_pins[4] = {7, 6, 5, 4};
+uint8_t led_row_pins[4] = {0,1,2,3};
+uint8_t led_col_pins[4] = {4,5,6,7};
 
 uint16_t tempo = 120;
 uint16_t old_tempo = 0;
@@ -137,8 +137,8 @@ struct SeeqData {
 
 // Keypad pins
 
-uint8_t row_pins[] = {9, 8, 11, 10};
-uint8_t col_pins[] = {15, 14, 13, 12};
+uint8_t row_pins[] = {8,9,10,11};
+uint8_t col_pins[] = {15,14,13,12};
 
 
 
@@ -148,14 +148,14 @@ void init_leds() {
 
         gpio_init(p);
         gpio_set_dir(p, GPIO_OUT);
-        gpio_put(p, 0);
+        gpio_put(p, 1);
     }
     for(int i = 0; i<4;i++) {
         uint8_t p = led_col_pins[i];
 
         gpio_init(p);
         gpio_set_dir(p, GPIO_OUT);
-        gpio_put(p, 1);
+        gpio_put(p, 0);
     }
 }
 
@@ -241,17 +241,17 @@ void led_display(uint8_t led) {
     //turn off all leds
     for(int i = 0; i<4;i++) {
         uint8_t p = led_row_pins[i];
-        gpio_put(p, 0);
+        gpio_put(p, 1);
     }
     for(int i = 0; i<4;i++) {
         uint8_t p = led_col_pins[i];
-        gpio_put(p, 1);
+        gpio_put(p, 0);
     }
     if (led < 16 && led >= 0) {
         uint8_t row = led / 4;
         uint8_t col = led % 4;
-        gpio_put(led_row_pins[row], 1);
-        gpio_put(led_col_pins[col], 0);
+        gpio_put(led_row_pins[row], 0);
+        gpio_put(led_col_pins[col], 1);
     }
 }
 
@@ -273,7 +273,7 @@ void note_text(char * note_str, uint8_t midi_note) {
 
 void __time_critical_func(core1_func)() {    
       // SCL, SDA, Width, Height, Frequency, I2C Port
-    OLED oled(21, 20, 128, 32, 300000, true, i2c0);
+    OLED oled(21, 20, 128, 32, 300000, false, i2c0);
 
     // Draw two circles
     oled.drawFilledCircle(100, 4, 4);

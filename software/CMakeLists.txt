@@ -3,6 +3,7 @@ include(pico_sdk_import.cmake)
 
 project(seeq C CXX ASM)
 
+
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 set(PICO_SDK_PATH $ENV{PICO_SDK_PATH})
@@ -12,6 +13,7 @@ add_compile_options(-Wall
         -Wno-unused-function # we have some for the docs that aren't called
         -Wno-maybe-uninitialized
         )
+        
 
 add_definitions(-DPICO=1)
 add_definitions(-DUSE_MEMORY_POINTER=1)
