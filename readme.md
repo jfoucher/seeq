@@ -1,5 +1,7 @@
 ## SEEQ a MIDI and CV/gate sequencer
 
+![https://6px.eu/seeq/fabrication/seeq-3D_top.png](3D view)
+
 ### What is it?
 
 This project is a simple sequencer I designed and built. I started a project to build an analog synthesizer, but I did not have anything that would be able to output the necessary CV signals, so I decided to build one.

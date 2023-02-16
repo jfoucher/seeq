@@ -106,6 +106,19 @@ outputs:
       zoom: 2
       auto_crop: true
       ray_tracing: true
+
+  - name: 'renderbottom'
+    comment: "Render 3D view"
+    type: render_3d
+    options:
+      background1: "#FFFFFF"
+      background2: "#FFFFFF"
+      width: 2560
+      height: 1440
+      zoom: 2
+      auto_crop: true
+      ray_tracing: true
+      view: 'bottom'
         
   - name: 'draw'
     comment: "PCB 2D drawing"
