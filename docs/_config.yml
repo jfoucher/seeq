@@ -1,0 +1,31 @@
+title: SEEQ Midi and CV sequencer
+email: jfoucher@6px.eu
+
+description: "SEEQ is a MDI and CV/Gate sequencer, designed by Jonathan Foucher."
+
+baseurl: "/seeq" # the subpath of your site, e.g. /blog
+url: "https://6px.eu" # the base hostname & protocol for your site
+twitter_username: jfoucher 
+github_username:  jfoucher
+author: "Jonathan Foucher"
+
+# feed:
+#   posts_limit: 20
+
+# Build settings
+markdown: kramdown
+kramdown:
+  input: GFM
+
+sass:
+    style: compressed
+permalink: /news/:year/:month/:day/:title/
+compress_html:
+    clippings: []
+    comments: []
+    endings: []
+    ignore:
+    envs: []
+    blanklines: false
+    profile: false
+    startings: []

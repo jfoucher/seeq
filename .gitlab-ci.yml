@@ -1,0 +1,98 @@
+
+
+stages:
+  - run_erc
+  - run_drc
+  - gen_fab
+  - deploy_pages
+
+erc:
+  image: setsoft/kicad_auto:dev_k6
+  stage: run_erc
+  script:
+    - "cd hardware && [ -f *.kicad_sch ] && kibot -c .kibot.yaml -d ./Fabrication -s update_xml,run_drc -i"
+  
+  artifacts:
+    when: always
+    paths:
+      - hardware/Fabrication/
+  rules:
+    - if: '$CI_COMMIT_TAG'
+      when: always
+      changes:
+        paths:
+          - "hardware/seeq.kicad_sch"
+        compare_to: 'main'
+
+drc:
+  image: setsoft/kicad_auto:dev_k6
+  stage: run_drc
+  script:
+    - "cd hardware && [ -f *.kicad_pcb ] && kibot -c .kibot.yaml -d ./Fabrication -s update_xml,run_erc -i"
+  artifacts:
+    when: always
+    paths:
+      - hardware/Fabrication/
+
+  rules:
+    - if: '$CI_COMMIT_TAG'
+      when: on_success
+      changes:
+        paths:
+          - "hardware/seeq.kicad_pcb"
+        compare_to: 'main'
+
+
+out:
+  image: setsoft/kicad_auto:dev_k6
+  stage: gen_fab
+  script:
+    - "cd hardware && [ -f *.kicad_pcb ] && kibot -d ./Fabrication -c .kibot.yaml --skip-pre update_xml,run_drc,run_erc print_front gerbers drill zip render print_sch csv-bom html-bom && rm -rf ./Fabrication/Gerbers"
+  artifacts:
+    when: always
+    paths:
+      - hardware/Fabrication/
+  rules:
+    - if: '$CI_COMMIT_TAG'
+      when: on_success
+      changes:
+        paths: 
+          - "hardware/seeq.kicad_sch"
+          - "hardware/seeq.kicad_pcb"
+        compare_to: 'main'
+
+pages:
+  image: ruby:2.6
+  variables:
+    JEKYLL_ENV: production
+    LC_ALL: C.UTF-8
+  stage: deploy_pages
+  script:
+    - gem install bundler
+    - cd docs && bundle install && cd ../
+    - cd docs && find . -type f -exec sed -i 's/___VERSION___/'"$CI_COMMIT_TAG"'/g' {} \;  && cd ../
+    - cd docs && bundle exec jekyll build -d ../public
+    - mkdir ../public/fabrication
+    - cp -aR ../hardware/Fabrication/* ../public/fabrication/
+    - apt-get update -yqq && apt-get install -y -qq git curl unzip gnupg rsync
+    - ls -la
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - which ssh-keyscan
+    - ssh-keyscan -p 2543 144.76.104.209 >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    - rsync -rv -e "ssh -p 2543" ../public/* deploy@144.76.104.209:/var/www/planck6502.com
+
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: '$CI_COMMIT_TAG'
+      when: on_success
+      changes:
+        paths:
+          - "docs/**/*"
+        compare_to: 'main'

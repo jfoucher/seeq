@@ -1,4 +1,4 @@
-21643894202740311
+21990577744260459
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -6529,6 +6529,13 @@ M8 Male connector for panel, 90° PCB mount (https://www.amphenolltw.com/2012dow
 three-pin M8
 0
 5
+4
+Connector_Audio
+Conector_Audio_PJ-341
+
+
+0
+4
 4
 Connector_Audio
 Jack_3.5mm_CUI_SJ-3523-SMT_Horizontal
@@ -50546,6 +50553,279 @@ SMD SMT ceramic resonator filter filter hand-soldering
 0
 3
 3
+Custom_Footprints
+3.5mm_6_contacts_4_conductors_audio_plug
+Headphones with microphone connector, 3.5mm, 4 pins.
+3.5mm jack mic microphone phones headphones 4pins audio plug
+0
+6
+4
+Custom_Footprints
+BNC_connector
+BNC connector for PCB mounting.
+BNC connector
+0
+2
+2
+Custom_Footprints
+Capacitor_Disc_D6_P5
+Capacitor 6mm Disc, Pitch 5mm
+Capacitor
+0
+2
+2
+Custom_Footprints
+Capacitor_Disc_D6_P7.5
+Capacitor 6mm Disc, Pitch 7.5mm
+Capacitor
+0
+2
+2
+Custom_Footprints
+Cliff_UT1x_SPDT_ON-ON_Switch
+PCliff UT1D/E/F/G/H SPDT toggle swith. Horizontal through hole mounted.
+swithc toggle spdt
+0
+5
+4
+Custom_Footprints
+Cliff_UT1x_SPDT_ON-ON_Switch_Short
+PCliff UT1D/E/F/G/H SPDT toggle swith. Horizontal through hole mounted.
+swithc toggle spdt
+0
+5
+4
+Custom_Footprints
+Connection_Pads_03
+Three connection pads.
+Just a "Net tie" as an more or less elegant way to connect two different nets without disturbing ERC and DRC. Make connection between the pads by yourself.
+0
+3
+3
+Custom_Footprints
+Connector_Mini-DIN_Female_6Pin_2rows
+A footprint for the generic 6 pin Mini-DIN through hole connector with shell.
+mini din 6pin connector socket
+0
+9
+7
+Custom_Footprints
+Diode_DO-35_SOD27_Horizontal_RM10
+Diode, DO-35,  SOD27, Horizontal, RM 10mm
+Diode, DO-35, SOD27, Horizontal, RM 10mm, 1N4148,
+0
+2
+2
+Custom_Footprints
+KiCad-Logo_5mm_Copper
+KiCad Logo
+Logo KiCad
+0
+0
+0
+Custom_Footprints
+KiCad-Logo_5mm_SolderMask
+KiCad Logo
+Logo KiCad
+0
+0
+0
+Custom_Footprints
+Microampermeter
+
+
+0
+2
+2
+Custom_Footprints
+Microampermeter_Small
+
+microampermeter
+0
+2
+2
+Custom_Footprints
+MountingHole_2.5x3.0mm
+Mounting Hole 2.5mm x 3.0mm, no annular
+mounting hole 2.5mm no annular
+0
+0
+0
+Custom_Footprints
+PJ311_3.5mm_Jack
+PJ311 6pin SMD 3.5mm stereo headphones jack.
+headphones jack plug stereo 3.5mm PJ311
+0
+6
+6
+Custom_Footprints
+PJ320D_3.5mm_Jack
+Headphones with microphone connector, 3.5mm, 4 pins.
+3.5mm jack mic microphone phones headphones 4pins audio plug
+0
+4
+4
+Custom_Footprints
+PJ320D_3.5mm_Jack_Short
+Headphones with microphone connector, 3.5mm, 4 pins.
+3.5mm jack mic microphone phones headphones 4pins audio plug
+0
+4
+4
+Custom_Footprints
+PJ320E_3.5mm_Jack
+Headphones with microphone connector, 3.5mm, 4 pins.
+3.5mm jack mic microphone phones headphones 4pins audio plug
+0
+5
+5
+Custom_Footprints
+PJ320E_Headphones_Plug_Short
+Headphones with microphone connector, 3.5mm, 4 pins.
+3.5mm jack mic microphone phones headphones 4pins audio plug
+0
+5
+5
+Custom_Footprints
+PJ31060-I_3.5mm_Jack
+PJ31060-I 6pin SMD 3.5mm headphones jack.
+headphones jack plug stereo 3.5mm PJ31060-I PJ31060
+0
+6
+6
+Custom_Footprints
+Philmore_30-20001_SPDT_ON-ON_Switch
+Philmore 30-2000x SPDT toggle swith. Horizontal through hole mounted.
+swithc toggle spdt
+0
+5
+4
+Custom_Footprints
+Potentiometer_Trimmer_2x4
+Potentiometer, Trimmer, Spectrol Type 36M, Econtrim, Rev A, 02 Aug 2010,
+Potentiometer, Trimmer, Spectrol Type 36M, Econtrim, Rev A, 02 Aug 2010,
+0
+3
+3
+Custom_Footprints
+Potentiometer_Trimmer_Bourns_3362X
+Spindle Trimmer Potentiometer, Bourns 3266W, https://www.bourns.com/pdfs/3266.pdf
+Spindle Trimmer Potentiometer   Bourns 3266W
+0
+3
+3
+Custom_Footprints
+Potentiometer_Trimmer_Vertical_Multi_Compatible
+Potentiometer, vertically mounted, Omeg PC16PU, Omeg PC16PU, Omeg PC16PU, Vishay/Spectrol 248GJ/249GJ Single, Vishay/Spectrol 248GJ/249GJ Single, Vishay/Spectrol 248GJ/249GJ Single, Vishay/Spectrol 248GH/249GH Single, Vishay/Spectrol 148/149 Single, Vishay/Spectrol 148/149 Single, Vishay/Spectrol 148/149 Single, Vishay/Spectrol 148A/149A Single with mounting plates, Vishay/Spectrol 148/149 Double, Vishay/Spectrol 148A/149A Double with mounting plates, Piher PC-16 Single, Piher PC-16 Single, Piher PC-16 Single, Piher PC-16SV Single, Piher PC-16 Double, Piher PC-16 Triple, Piher T16H Single, Piher T16L Single, Piher T16H Double, Alps RK163 Single, Alps RK163 Double, Alps RK097 Single, Alps RK097 Double, Bourns PTV09A-2 Single with mounting sleve Single, Bourns PTV09A-1 with mounting sleve Single, Bourns PRS11S Single, Alps RK09K Single with mounting sleve Single, Alps RK09K with mounting sleve Single, Alps RK09L Single, Alps RK09L Single, Alps RK09L Double, Alps RK09L Double, Alps RK09Y Single, Bourns 3339S Single, Bourns 3339S Single, Bourns 3339P Single, Bourns 3339H Single, Vishay T7YA Single, Suntan TSR-3386H Single, Suntan TSR-3386H Single, Suntan TSR-3386P Single, Vishay T73XX Single, Vishay T73XX Single, Vishay T73YP Single, Piher PT-6h Single, http://www.piher-nacesa.com/pdf/11-PT6v03.pdf
+Potentiometer vertical  Omeg PC16PU  Omeg PC16PU  Omeg PC16PU  Vishay/Spectrol 248GJ/249GJ Single  Vishay/Spectrol 248GJ/249GJ Single  Vishay/Spectrol 248GJ/249GJ Single  Vishay/Spectrol 248GH/249GH Single  Vishay/Spectrol 148/149 Single  Vishay/Spectrol 148/149 Single  Vishay/Spectrol 148/149 Single  Vishay/Spectrol 148A/149A Single with mounting plates  Vishay/Spectrol 148/149 Double  Vishay/Spectrol 148A/149A Double with mounting plates  Piher PC-16 Single  Piher PC-16 Single  Piher PC-16 Single  Piher PC-16SV Single  Piher PC-16 Double  Piher PC-16 Triple  Piher T16H Single  Piher T16L Single  Piher T16H Double  Alps RK163 Single  Alps RK163 Double  Alps RK097 Single  Alps RK097 Double  Bourns PTV09A-2 Single with mounting sleve Single  Bourns PTV09A-1 with mounting sleve Single  Bourns PRS11S Single  Alps RK09K Single with mounting sleve Single  Alps RK09K with mounting sleve Single  Alps RK09L Single  Alps RK09L Single  Alps RK09L Double  Alps RK09L Double  Alps RK09Y Single  Bourns 3339S Single  Bourns 3339S Single  Bourns 3339P Single  Bourns 3339H Single  Vishay T7YA Single  Suntan TSR-3386H Single  Suntan TSR-3386H Single  Suntan TSR-3386P Single  Vishay T73XX Single  Vishay T73XX Single  Vishay T73YP Single  Piher PT-6h Single
+0
+6
+3
+Custom_Footprints
+Resistor_Horizontal_2W
+Resistor, Axial, RM 20mm,
+Resistor Axial RM 20mm
+0
+2
+2
+Custom_Footprints
+Resistor_Vertical_RM2.5mm
+Resistor, Vertical, RM 2.5mm, 1/4W,
+Resistor, Vertical, RM 2.5mm, 1/4W,
+0
+2
+2
+Custom_Footprints
+SOP50P1400X120-32N
+32-lead Thin Small Outline Package (TSOP)
+Integrated Circuit
+0
+32
+32
+Custom_Footprints
+Seiko_MS621FE-FL11E_Battery
+Seiko MS621FE-FL11E 3.0V backup battery.
+seiko battery MS621FE FL11E backup power voltage cell
+0
+2
+2
+Custom_Footprints
+Slide_Switch_SPDT_ThroughHole
+
+switch, 1p2t, slide, spdt
+0
+3
+3
+Custom_Footprints
+Small_Tumbler_SW
+Small Tumbler Switch
+SWITCH DEV TOGGLE ILLUM SPDT
+0
+3
+3
+Custom_Footprints
+Switch_Slide_SPDT_THT_5MS1S102AM6QES
+SPDT slide switch. Through hole right angle mounting.
+switch slide spdt
+0
+5
+4
+Custom_Footprints
+Symbol_Screw_Type1_SilkscreenTop
+
+symbol screw drawing
+0
+0
+0
+Custom_Footprints
+Symbol_Screw_Type2_SilkscreenTop
+
+symbol screw drawing
+0
+0
+0
+Custom_Footprints
+Symbol_Screw_Type3_SilkscreenTop
+
+symbol screw drawing
+0
+0
+0
+Custom_Footprints
+Symbol_Screw_Type4_SilkscreenTop
+
+symbol screw drawing
+0
+0
+0
+Custom_Footprints
+Tumbler_SW
+Tumbler Switch x2
+SWITCH DEV TOGGLE ILLUM SPDT
+0
+3
+3
+Custom_Footprints
+Tumbler_SW_x2
+Tumbler Switch x2
+SWITCH DEV TOGGLE ILLUM SPDT
+0
+6
+6
+Custom_Footprints
+USB_Mini-B_THT_Horizontal
+Horizontally mounted through hole Mini-USB connector.
+connector usb tht throughhole
+0
+9
+6
+Custom_Footprints
+USB_Mini-B_THT_Vertical
+Vertical Mini USB connector with through hole mount.
+mini USB vertical connector
+0
+7
+6
 Diode_SMD
 D_0201_0603Metric
 Diode SMD 0201 (0603 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: https://www.vishay.com/docs/20052/crcw0201e3.pdf), generated with kicad-footprint-generator
@@ -57371,6 +57651,1035 @@ solder jumper open
 0
 5
 3
+Keebio-Parts
+3_Pin_Jumper
+
+
+0
+9
+3
+Keebio-Parts
+4pin35mmAudio
+
+
+0
+6
+6
+Keebio-Parts
+AST1109MLTRQ
+Murata Buzzer http://www.murata.com/en-us/api/pdfdownloadapi?cate=&partno=PKMCS0909E4000-R1
+Murata Buzzer Beeper
+0
+2
+2
+Keebio-Parts
+AT90USB1286_TQFP_14mm
+64-Lead Plastic Thin Quad Flatpack (PF) - 14x14x1 mm Body, 2.00 mm [TQFP] (see Microchip Packaging Specification 00000049BS.pdf)
+QFP 0.8
+0
+64
+64
+Keebio-Parts
+ATMEGA32U4-AU
+
+
+0
+44
+44
+Keebio-Parts
+ArduinoProMicro
+
+
+0
+24
+24
+Keebio-Parts
+ArduinoProMicro-BackSide
+
+
+0
+24
+24
+Keebio-Parts
+ArduinoProMicro-Mini-USB
+
+
+0
+24
+24
+Keebio-Parts
+ArduinoProMicro-Mini-USB-No-Text
+
+
+0
+24
+24
+Keebio-Parts
+ArduinoProMicro-Mini-USB-ZigZag
+
+
+0
+24
+24
+Keebio-Parts
+ArduinoProMicro-TopSide
+
+
+0
+24
+24
+Keebio-Parts
+ArduinoProMicro-ZigZag
+
+
+0
+24
+24
+Keebio-Parts
+CUI_SJ-43614-SMT
+
+
+0
+4
+4
+Keebio-Parts
+C_0402
+Capacitor SMD 0402, reflow soldering, AVX (see smccp.pdf)
+capacitor 0402
+0
+2
+2
+Keebio-Parts
+C_0603
+SMT, 1608, 0603
+SMT, 1608, 0603
+0
+2
+2
+Keebio-Parts
+Cherry-MX-Low-Profile
+
+
+0
+2
+2
+Keebio-Parts
+Crystal_SMD_2520-4pin_2.5x2.0mm
+SMD Crystal SERIES SMD2520/4 http://www.newxtal.com/UploadFiles/Images/2012-11-12-09-29-09-776.pdf, 2.5x2.0mm^2 package
+SMD SMT crystal
+0
+4
+4
+Keebio-Parts
+Crystal_SMD_3225-4pin_3.2x2.5mm
+SMD Crystal SERIES SMD3225/4 http://www.txccrystal.com/images/pdf/7m-accuracy.pdf, 3.2x2.5mm^2 package
+SMD SMT crystal
+0
+4
+4
+Keebio-Parts
+D_0805
+
+
+0
+2
+2
+Keebio-Parts
+D_SOD-323
+SOD-323
+SOD-323
+0
+2
+2
+Keebio-Parts
+D_SOD123
+
+
+0
+2
+2
+Keebio-Parts
+D_SOD123F
+
+
+0
+2
+2
+Keebio-Parts
+Diode
+
+
+0
+2
+2
+Keebio-Parts
+Diode-Hybrid-Back
+
+
+0
+6
+2
+Keebio-Parts
+Diode-dual
+
+
+0
+10
+2
+Keebio-Parts
+Diode-hybrid-3pad
+
+
+0
+6
+2
+Keebio-Parts
+Diode_Long
+
+
+0
+2
+2
+Keebio-Parts
+Elite-C
+
+
+0
+29
+29
+Keebio-Parts
+Elite-C-ZigZag
+
+
+0
+29
+29
+Keebio-Parts
+Elite-C-castellated-24pin
+
+
+0
+24
+24
+Keebio-Parts
+Elite-C-castellated-24pin-holes
+
+
+0
+48
+24
+Keebio-Parts
+Elite-C-castellated-29pin
+
+
+0
+29
+29
+Keebio-Parts
+Elite-C-castellated-29pin-holes
+
+
+0
+58
+29
+Keebio-Parts
+Epson_TSX-3225
+
+
+0
+4
+4
+Keebio-Parts
+Fuse_0805
+SMT, 2012, 0805
+SMT, 2012, 0805
+0
+2
+2
+Keebio-Parts
+HRO-TYPE-C-31-M-12-Assembly
+
+
+0
+16
+13
+Keebio-Parts
+Header-6-Pin-ZigZag
+Through hole straight socket strip, 1x06, 2.54mm pitch, single row
+Through hole socket strip THT 1x06 2.54mm single row
+0
+6
+6
+Keebio-Parts
+Header-12-Pin-ZigZag
+Through hole straight socket strip, 1x06, 2.54mm pitch, single row
+Through hole socket strip THT 1x06 2.54mm single row
+0
+12
+12
+Keebio-Parts
+Header-12-Pin-ZigZag-Square
+Through hole straight socket strip, 1x06, 2.54mm pitch, single row
+Through hole socket strip THT 1x06 2.54mm single row
+0
+12
+12
+Keebio-Parts
+ICSP-Header
+Through hole straight socket strip, 1x06, 2.54mm pitch, single row
+Through hole socket strip THT 1x06 2.54mm single row
+0
+6
+6
+Keebio-Parts
+ICSP-Header-ZigZag
+Through hole straight socket strip, 1x06, 2.54mm pitch, single row
+Through hole socket strip THT 1x06 2.54mm single row
+0
+6
+6
+Keebio-Parts
+JUMPER_SMD_2DUB
+
+
+0
+12
+2
+Keebio-Parts
+KLJ-1102
+
+
+0
+2
+2
+Keebio-Parts
+Kailh-PG1350-1.5u
+
+
+0
+4
+4
+Keebio-Parts
+Kailh-PG1350-1.25u
+
+
+0
+4
+4
+Keebio-Parts
+Kailh-PG1350-1.25u-LED-flip
+
+
+0
+4
+4
+Keebio-Parts
+Kailh-PG1350-1u
+
+
+0
+4
+4
+Keebio-Parts
+Kailh-PG1350-1u-No-Clickhole
+
+
+0
+4
+4
+Keebio-Parts
+Kailh-PG1350-1u-NoLED
+
+
+0
+2
+2
+Keebio-Parts
+Kailh-PG1350-1u-reversible
+
+
+0
+5
+4
+Keebio-Parts
+Kailh-PG1350-1u-reversible-No-Clickhole
+
+
+0
+5
+4
+Keebio-Parts
+Kailh-PG1350-1u-reversible-flip
+
+
+0
+5
+4
+Keebio-Parts
+Kailh-PG1350-2.5u
+
+
+0
+4
+4
+Keebio-Parts
+Kailh-PG1350-2u
+
+
+0
+4
+4
+Keebio-Parts
+Kailh-PG1350-2u-NoLED
+
+
+0
+2
+2
+Keebio-Parts
+Kailh-PG1350-2u-Vert-NoLED
+
+
+0
+2
+2
+Keebio-Parts
+LED_3mm
+
+
+0
+2
+2
+Keebio-Parts
+LQFP-48_7x7mm_Pitch0.5mm
+48 LEAD LQFP 7x7mm (see MICREL LQFP7x7-48LD-PL-1.pdf)
+QFP 0.5
+0
+48
+48
+Keebio-Parts
+Low-Profile-Choc-MX
+
+
+0
+5
+4
+Keebio-Parts
+MD_Diode
+
+
+0
+2
+2
+Keebio-Parts
+MX-Alps-Choc-1U
+
+
+0
+8
+4
+Keebio-Parts
+MX-Alps-Choc-1U-No-Clickhole
+
+
+0
+8
+4
+Keebio-Parts
+MX-Alps-Choc-1U-NoLED
+
+
+0
+6
+2
+Keebio-Parts
+MX-Alps-Choc-1U-NoLED-Alt
+
+
+0
+6
+2
+Keebio-Parts
+MX-Alps-Choc-2U
+
+
+0
+8
+4
+Keebio-Parts
+MX-Alps-Choc-2U-StabFlip
+
+
+0
+8
+4
+Keebio-Parts
+MX-Alps_DMask
+
+
+0
+2
+1
+Keebio-Parts
+MX-Alps_FMask
+
+
+0
+2
+1
+Keebio-Parts
+MX-Alps_FMask-2u
+
+
+0
+2
+1
+Keebio-Parts
+MX-Alps_Switch_Cutout
+
+
+0
+2
+1
+Keebio-Parts
+MX-Alps_Switch_Cutout-1u_1.25u
+
+
+0
+0
+0
+Keebio-Parts
+MX-Alps_Switch_Cutout-1u_1.25u-3u-wide
+
+
+0
+0
+0
+Keebio-Parts
+MX-Alps_Switch_Cutout-1u_2u
+
+
+0
+2
+1
+Keebio-Parts
+MX-Alps_Switch_Cutout-3u-wide
+
+
+0
+0
+0
+Keebio-Parts
+MX-Quad
+MX/Alps footprint
+
+0
+8
+2
+Keebio-Parts
+MX_FMask
+
+
+0
+2
+1
+Keebio-Parts
+MX_FMask-2u
+
+
+0
+3
+1
+Keebio-Parts
+MX_FMask-2u-with-cutout
+
+
+0
+2
+1
+Keebio-Parts
+MX_FMask-with-cutout
+
+
+0
+2
+1
+Keebio-Parts
+MX_LED
+
+
+0
+2
+2
+Keebio-Parts
+MX_Stabilizer_Cutout
+
+
+0
+0
+0
+Keebio-Parts
+MX_Stabilizer_Cutout-2u
+
+
+0
+0
+0
+Keebio-Parts
+MX_Switch_Cutout
+
+
+0
+0
+0
+Keebio-Parts
+MX_Switch_Mod_Cutout
+
+
+0
+0
+0
+Keebio-Parts
+Mini-USB
+
+
+0
+7
+6
+Keebio-Parts
+MountingHole
+
+
+0
+1
+0
+Keebio-Parts
+QFN-44-1EP_7x7mm_Pitch0.5mm
+UK Package; 44-Lead Plastic QFN (7mm x 7mm); (see Linear Technology QFN_44_05-08-1763.pdf)
+QFN 0.5
+0
+60
+45
+Keebio-Parts
+RGB-6028
+
+
+0
+4
+4
+Keebio-Parts
+RGB_3528_Blue_Notch
+RGB LED 3.2x2.7mm http://www.avagotech.com/docs/AV02-0610EN
+LED 3227
+0
+4
+4
+Keebio-Parts
+RGB_3528_Blue_Notch-MX
+RGB LED 3.2x2.7mm http://www.avagotech.com/docs/AV02-0610EN
+LED 3227
+0
+4
+4
+Keebio-Parts
+RGB_3528_Blue_Notch-MX-Flip
+RGB LED 3.2x2.7mm http://www.avagotech.com/docs/AV02-0610EN
+LED 3227
+0
+4
+4
+Keebio-Parts
+R_0402
+Resistor SMD 0402, reflow soldering, Vishay (see dcrcw.pdf)
+resistor 0402
+0
+2
+2
+Keebio-Parts
+R_0603
+SMT, 1608, 0603
+SMT, 1608, 0603
+0
+2
+2
+Keebio-Parts
+R_0805
+SMT, 2012, 0805
+SMT, 2012, 0805
+0
+2
+2
+Keebio-Parts
+Resistor
+
+
+0
+2
+2
+Keebio-Parts
+Resistor-Compact
+
+
+0
+2
+2
+Keebio-Parts
+Resistor-Compact-1-side
+
+
+0
+2
+2
+Keebio-Parts
+Resistor-Hybrid
+
+
+0
+10
+2
+Keebio-Parts
+Resistor-Hybrid-Back
+
+
+0
+6
+2
+Keebio-Parts
+RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm
+Alps rotary encoder, EC12E... with switch, vertical shaft, http://www.alps.com/prod/info/E/HTML/Encoder/Incremental/EC11/EC11E15204A3.html
+rotary encoder
+0
+7
+6
+Keebio-Parts
+RotaryEncoder_EC11
+Alps rotary encoder, EC12E... with switch, vertical shaft, http://www.alps.com/prod/info/E/HTML/Encoder/Incremental/EC11/EC11E15204A3.html
+rotary encoder
+0
+5
+5
+Keebio-Parts
+RotaryEncoder_EC11-no-legs
+Alps rotary encoder, EC12E... with switch, vertical shaft, http://www.alps.com/prod/info/E/HTML/Encoder/Incremental/EC11/EC11E15204A3.html
+rotary encoder
+0
+5
+5
+Keebio-Parts
+SK6812-MINI-E
+
+
+0
+4
+4
+Keebio-Parts
+SM0805D
+
+
+0
+2
+2
+Keebio-Parts
+SOIC-8_3.9x4.9mm_Pitch1.27mm
+8-Lead Plastic Small Outline (SN) - Narrow, 3.90 mm Body [SOIC] (see Microchip Packaging Specification 00000049BS.pdf)
+SOIC 1.27
+0
+8
+8
+Keebio-Parts
+SOT-23
+SOT-23, Standard
+SOT-23
+0
+3
+3
+Keebio-Parts
+SOT-23_Handsoldering
+SOT-23, Handsoldering
+SOT-23
+0
+3
+3
+Keebio-Parts
+SOT-143B
+SOT143B
+
+0
+4
+4
+Keebio-Parts
+SOT-363_SC-70-6
+SOT-363, SC-70-6
+SOT-363 SC-70-6
+0
+6
+6
+Keebio-Parts
+SW_SPST_3x3
+Low-profile SMD Tactile Switch, https://www.e-switch.com/system/asset/product_line/data_sheet/165/TL3342.pdf
+SPST Tactile Switch
+0
+4
+2
+Keebio-Parts
+SW_SPST_TL3342
+Low-profile SMD Tactile Switch, https://www.e-switch.com/system/asset/product_line/data_sheet/165/TL3342.pdf
+SPST Tactile Switch
+0
+4
+2
+Keebio-Parts
+SW_Tactile_SPST_Angled_MJTP1117
+tactile switch SPST right angle, PTS645VL39-2 LFS
+tactile switch SPST angled PTS645VL39-2 LFS C&K Button
+0
+4
+2
+Keebio-Parts
+SW_Tactile_SPST_Angled_MJTP1117-no-mount
+tactile switch SPST right angle, PTS645VL39-2 LFS
+tactile switch SPST angled PTS645VL39-2 LFS C&K Button
+0
+2
+2
+Keebio-Parts
+SinglePad
+
+
+0
+1
+1
+Keebio-Parts
+SolderJumper
+
+
+0
+4
+3
+Keebio-Parts
+SolderJumperLeft
+
+
+0
+3
+3
+Keebio-Parts
+SolderJumperPair
+
+
+0
+6
+3
+Keebio-Parts
+SolderJumperRight
+
+
+0
+3
+3
+Keebio-Parts
+SolderJumperSet
+
+
+0
+12
+6
+Keebio-Parts
+SolderJumperSets
+
+
+0
+6
+2
+Keebio-Parts
+SolidCopper
+Mounting Hole 2.2mm, M2
+mounting hole 2.2mm m2
+0
+2
+1
+Keebio-Parts
+TQFP-44_10x10mm_Pitch0.8mm
+44-Lead Plastic Thin Quad Flatpack (PT) - 10x10x1.0 mm Body [TQFP] (see Microchip Packaging Specification 00000049BS.pdf)
+QFP 0.8
+0
+44
+44
+Keebio-Parts
+TQFP-48_7x7mm_Pitch0.5mm
+48 LEAD TQFP 7x7mm (see MICREL TQFP7x7-48LD-PL-1.pdf)
+QFP 0.5
+0
+48
+48
+Keebio-Parts
+TRRS-PJ-320A
+
+
+0
+4
+4
+Keebio-Parts
+TRRS-PJ-320A-dual
+
+
+0
+5
+4
+Keebio-Parts
+TRRS-PJ-320A-no-Fmask
+
+
+0
+8
+4
+Keebio-Parts
+TRRS-PJ-320D
+
+
+0
+4
+4
+Keebio-Parts
+TRRS-PJ-605
+
+
+0
+6
+6
+Keebio-Parts
+TRRS-PJ-606
+
+
+0
+6
+6
+Keebio-Parts
+TRRS_Jack
+
+
+0
+6
+6
+Keebio-Parts
+TRRS_Jack-one-sided
+
+
+0
+4
+4
+Keebio-Parts
+TRRS_Jumper
+
+
+0
+6
+6
+Keebio-Parts
+Teensy_2.0
+
+
+0
+31
+31
+Keebio-Parts
+Triple-Dual-1u-LED
+
+
+0
+21
+4
+Keebio-Parts
+Triple-Dual-1u-LED-flip
+
+
+0
+21
+4
+Keebio-Parts
+Triple-Dual-2u-LED
+
+
+0
+21
+4
+Keebio-Parts
+Triple-Dual-2u-LED-stab-flip
+
+
+0
+21
+4
+Keebio-Parts
+USB-C-12-Pin-MidMount
+
+
+0
+16
+13
+Keebio-Parts
+USB-Mini-B_ LCSC-C46398
+
+
+0
+9
+6
+Keebio-Parts
+USB-Mini-B_2leg
+
+
+0
+7
+6
+Keebio-Parts
+USB_miniB_HandSolder
+http://www.hirose.co.jp/cataloge_hp/e24000019.pdf
+USB miniB hirose
+0
+9
+9
+Keebio-Parts
+VIA-0.6mm
+
+
+0
+1
+1
+Keebio-Parts
+WS2812B
+
+
+0
+4
+4
+Keebio-Parts
+breakaway-hole
+
+
+0
+0
+0
+Keebio-Parts
+breakaway-hole-big
+
+
+0
+0
+0
+Keebio-Parts
+breakaway-mousebites
+
+
+0
+0
+0
+Keebio-Parts
+solder_jumper
+
+
+0
+2
+2
 LED_SMD
 LED-APA102-2020
 http://www.led-color.com/upload/201604/APA102-2020%20SMD%20LED.pdf
@@ -58491,6 +59800,27 @@ Yellow 5381 Series LED
 0
 2
 2
+Logo
+logo
+
+
+0
+0
+0
+Logo
+logo-big
+
+
+0
+0
+0
+Logo
+logo-sm
+
+
+0
+0
+0
 MCU_RaspberryPi_and_Boards
 Crystal_SMD_HC49-US
 SMD Crystal HC-49-SD http://cdn-reichelt.de/documents/datenblatt/B400/xxx-HC49-SMD.pdf, 11.4x4.7mm^2 package
@@ -76460,6 +77790,41 @@ TO-264-5 Vertical RM 3.81mm
 0
 5
 5
+Panelization
+mouse-bite-1mm-slot
+
+
+0
+0
+0
+Panelization
+mouse-bite-2.54mm-slot
+
+
+0
+0
+0
+Panelization
+mouse-bite-2mm-slot
+
+
+0
+0
+0
+Panelization
+mouse-bite-3mm-slot
+
+
+0
+0
+0
+Panelization
+mouse-bite-5mm-slot
+
+
+0
+0
+0
 Potentiometer_SMD
 Potentiometer_ACP_CA6-VSMD_Vertical
 Potentiometer, vertical, ACP CA6-VSMD, http://www.acptechnologies.com/wp-content/uploads/2017/06/01-ACP-CA6.pdf
@@ -78399,6 +79764,13 @@ WiFi IEEE802.11 b/g/n
 0
 44
 44
+RP2040-Zero
+RP2040-Zero
+
+
+0
+23
+23
 Relay_SMD
 Relay_2P2T_10x6mm_TE_IMxxG
 Signal Relay, 10x6mm, 2 Form C, Gull Wings, https://www.te.com/commerce/DocumentDelivery/DDEController?Action=showdoc&DocId=Data+Sheet%7F108-98001%7FZ.1%7Fpdf%7FEnglish%7FENG_DS_108-98001_Z.1.pdf
@@ -90593,6 +91965,20 @@ varistor
 0
 2
 2
+eurorack
+EurorackPower10
+Eurorack Power
+Eurorack Power
+0
+10
+3
+eurorack
+Jack.PJ302M
+
+
+0
+3
+3
 mod
 seeq
 
@@ -90600,6 +91986,139 @@ seeq
 0
 0
 0
+switchboard
+2N700
+TO-92L leads in-line (large body variant of TO-92), also known as TO-226, wide, drill 0.75mm (see https://www.diodes.com/assets/Package-Files/TO92L.pdf and http://www.ti.com/lit/an/snoa059/snoa059.pdf)
+TO-92L Inline Wide transistor
+0
+3
+3
+switchboard
+ATtiny2313
+20-lead though-hole mounted DIP package, row spacing 7.62 mm (300 mils), LongPads
+THT DIP DIL PDIP 2.54mm 7.62mm 300mil LongPads
+0
+20
+20
+switchboard
+Arduino_Nano
+Arduino Nano, http://www.mouser.com/pdfdocs/Gravitech_Arduino_Nano3_0.pdf
+Arduino Nano
+0
+30
+30
+switchboard
+BC547
+TO-92 leads in-line, narrow, oval pads, drill 0.75mm (see NXP sot054_po.pdf)
+to-92 sc-43 sc-43a sot54 PA33 transistor
+0
+3
+3
+switchboard
+BS250
+TO-92L leads in-line (large body variant of TO-92), also known as TO-226, wide, drill 0.75mm (see https://www.diodes.com/assets/Package-Files/TO92L.pdf and http://www.ti.com/lit/an/snoa059/snoa059.pdf)
+TO-92L Inline Wide transistor
+0
+3
+3
+switchboard
+BatteryHolder_Keystone_3009_1x2450
+http://www.keyelco.com/product-pdf.cfm?p=787
+Keystone type 3009 coin cell retainer
+0
+4
+2
+switchboard
+BoostConverter3Pin
+
+
+0
+3
+3
+switchboard
+CP_Radial_D6.3mm_P2.50mm
+CP, Radial series, Radial, pin pitch=2.50mm, , diameter=6.3mm, Electrolytic Capacitor
+CP Radial series Radial pin pitch 2.50mm  diameter 6.3mm Electrolytic Capacitor
+0
+2
+2
+switchboard
+E10 Edison Socket Print Pins
+
+
+0
+2
+2
+switchboard
+ISP6
+
+
+0
+6
+6
+switchboard
+MTS-103 Switch
+
+
+0
+3
+3
+switchboard
+MTS-203 Switch
+
+
+0
+6
+6
+switchboard
+Resistor
+
+
+0
+2
+2
+switchboard
+ScrewTerminal1x2
+
+
+0
+2
+2
+switchboard
+Siegelstempel
+
+
+0
+0
+0
+switchboard
+TO-92_Inline
+TO-92 leads in-line, narrow, oval pads, drill 0.75mm (see NXP sot054_po.pdf)
+to-92 sc-43 sc-43a sot54 PA33 transistor
+0
+3
+3
+switchboard
+XY-016
+
+
+0
+4
+4
+w_conn_av
+BarrelJack_Horizontal
+DC Barrel Jack
+Power Jack
+0
+3
+3
+w_conn_av
+LED_D3.0mm_Horizontal_O3.81mm_Z6.0mm_2
+LED, diameter 3.0mm z-position of LED center 2.0mm, 2 pins, diameter 3.0mm z-position of LED center 2.0mm, 2 pins, diameter 3.0mm z-position of LED center 2.0mm, 2 pins, diameter 3.0mm z-position of LED center 6.0mm, 2 pins, diameter 3.0mm z-position of LED center 6.0mm, 2 pins
+LED diameter 3.0mm z-position of LED center 2.0mm 2 pins diameter 3.0mm z-position of LED center 2.0mm 2 pins diameter 3.0mm z-position of LED center 2.0mm 2 pins diameter 3.0mm z-position of LED center 6.0mm 2 pins diameter 3.0mm z-position of LED center 6.0mm 2 pins
+0
+2
+2
 w_conn_av
 SCART
 SCART socket, Tyco P/N 1483465-1
