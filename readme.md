@@ -1,6 +1,6 @@
 ## SEEQ a MIDI and CV/gate sequencer
 
-![https://6px.eu/seeq/fabrication/seeq-3D_top.png](3D view)
+![3D View](https://6px.eu/seeq/fabrication/seeq-3D_top.png)
 
 ### What is it?
 
