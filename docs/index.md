@@ -3,7 +3,9 @@ layout: page
 title: A simple sequencer with MIDI and CV/gate output
 ---
 
-![3D View](https://6px.eu/seeq/fabrication/seeq-3D_top.png)
+![3D View top](https://6px.eu/seeq/fabrication/seeq-3D_top.png)
+
+![3D View bottom](https://6px.eu/seeq/fabrication/seeq-3D_bottom.png)
 
 This project is a simple sequencer I designed and built. I started a project to build an analog synthesizer, but I did not have anything that would be able to output the necessary CV signals, so I decided to build one.
 

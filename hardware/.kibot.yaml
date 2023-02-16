@@ -106,6 +106,7 @@ outputs:
       zoom: 2
       auto_crop: true
       ray_tracing: true
+      solder_mask: "#9400D3"
 
   - name: 'renderbottom'
     comment: "Render 3D view"
@@ -118,6 +119,7 @@ outputs:
       zoom: 2
       auto_crop: true
       ray_tracing: true
+      solder_mask: "#9400D3"
       view: 'bottom'
         
   - name: 'draw'
