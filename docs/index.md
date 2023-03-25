@@ -4,8 +4,11 @@ title: A simple sequencer with MIDI and CV/gate output
 ---
 
 [Schematic](https://6px.eu/seeq/fabrication/seeq-schematic.pdf)
+
 [Gerber files](https://6px.eu/seeq/fabrication/seeq-zip.zip)
+
 [Download BOM](https://6px.eu/seeq/fabrication/seeq-bom.csv)
+
 [View BOM](https://6px.eu/seeq/fabrication/seeq-bom.html)
 
 ![3D View top](https://6px.eu/seeq/fabrication/seeq-3D_top.png)
