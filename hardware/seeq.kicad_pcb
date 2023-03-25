@@ -9817,7 +9817,7 @@
 
   (footprint "mod:logo-big" (layer "B.Cu")
     (tedit 0) (tstamp f18ac1e1-a29c-4fd1-a1bd-484dd52bf86d)
-    (at 128.651 74.676 180)
+    (at 128.651 70.231 180)
     (attr board_only exclude_from_pos_files exclude_from_bom)
     (fp_text reference "G***" (at 0 0) (layer "B.SilkS")
       (effects (font (size 1.524 1.524) (thickness 0.3)) (justify mirror))
@@ -10112,6 +10112,9 @@
   (gr_arc (start 227.965 26.035) (mid 231.10809 27.33691) (end 232.41 30.48) (layer "Edge.Cuts") (width 0.15) (tstamp cc370dd0-f7e6-4542-86fc-57fe4d5c5b86))
   (gr_text "https://6px.eu/seeq" (at 162.179 96.52) (layer "B.SilkS") (tstamp 4fb89be8-7499-4ccb-8d1d-7e9b2e037415)
     (effects (font (size 2 2) (thickness 0.3)) (justify mirror))
+  )
+  (gr_text "JLCJLCJLCJLC" (at 214.503 56.007) (layer "B.SilkS") (tstamp 8c304fba-850c-47ad-b11f-072787db32d8)
+    (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
   )
   (gr_text "${VERSION}" (at 139.954 96.647) (layer "B.SilkS") (tstamp c1450592-170f-48d4-8bed-1ca17d5f9659)
     (effects (font (size 2 2) (thickness 0.3)) (justify left mirror))
